@@ -98,6 +98,10 @@ with col1:
         
         submit_button = st.form_submit_button(label='レコメンドを表示')
 
+# 初期化: レコメンド結果を保持するための session_state を使用
+if 'recommendations' not in st.session_state:
+    st.session_state.recommendations = None
+
 # レコメンド結果を表示および保存
 if submit_button:
     recommendations = get_wine_recommendations(product, occasion, recipient, budget)

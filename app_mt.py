@@ -3,6 +3,12 @@ import openai
 import requests
 import json
 
+# OpenAI APIキーの設定
+if "OPENAI_API_KEY" in st.secrets:
+    openai.api_key = st.secrets["OPENAI_API_KEY"]
+else:
+    st.error("OPENAI_API_KEYがsecretsに設定されていません。")
+
 st.set_page_config(layout="wide")
 
 

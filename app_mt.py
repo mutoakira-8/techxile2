@@ -2,28 +2,17 @@ import streamlit as st
 import openai
 import requests
 import json
-import os
-from dotenv import load_dotenv, find_dotenv
-
-# .env ファイルから環境変数を読み込むための準備
-load_dotenv(find_dotenv())
-
-# 環境変数から API キーを取得
-openai_key = os.getenv('OPENAI_API_KEY')
-RAKUTEN_APP_ID = "1073975717553562237"
-
-if openai_key is None:
-    raise ValueError("APIキーが設定されていません。.env ファイルに OPENAI_API_KEY を設定してください。")
-
-# OpenAI API キーを設定
-openai.api_key = openai_key
-
 
 st.set_page_config(layout="wide")
 
+
+# OpenAI APIキーの設定
+openai.api_key = st.secrets["OPENAI_API_KEY"]
+RAKUTEN_APP_ID = "1073975717553562237"
+
 def get_wine_recommendations(product, occasion, recipient, budget):
     # ChatGPT 4を使用したワインのレコメンド
-    response = openai.chat.completions.create(
+    response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",  # GPT-4モデルを指定
         messages=[
             {"role": "system", "content": "あなたはワインの専門家です。日本語で回答してください。"},
@@ -94,7 +83,7 @@ if 'recommendations' not in st.session_state:
 
 # 左側にユーザー入力欄
 with col1:
-    st.header('🎁 オーダー')
+    st.header('🎁 ユーザー入力')
     with st.form(key='user_input_form'):
         product = st.text_input('商品', 'ワイン')
         occasion = st.text_input('目的', '昇進祝のプレゼント')
@@ -108,7 +97,7 @@ if submit_button:
     recommendations = get_wine_recommendations(product, occasion, recipient, budget)
     st.session_state.recommendations = recommendations
 
-# 中央にレコメンド結果
+ # 中央にレコメンド結果
 with col2:
     
     st.header('🍾 レコメンド結果')
@@ -117,16 +106,18 @@ with col2:
         recommendations = st.session_state.recommendations
         formatted_recommendations = format_recommendations(recommendations)
 
-        # レコメンド結果を表示
-        # バックスラッシュなしで HTML を表示
+    # レコメンド結果が存在し、非空であるか確認してから表示
+    if formatted_recommendations and len(formatted_recommendations) > 0:
         st.markdown(
-            """
+            f"""
             <div style='background-color: black; color: white; padding: 10px; border-radius: 10px;'>
-                {}
+                {formatted_recommendations.replace('\n', '<br>')}
             </div>
-            """.format(recommendations.replace('\n', '<br>')), 
+            """, 
             unsafe_allow_html=True
         )
+    else:
+        st.write("レコメンド結果が見つかりませんでした。")
 
 # 右側に商品選択と検索を表示
 with col3:
@@ -158,3 +149,5 @@ with col3:
                 st.write(f"[楽天市場で見る]({item_info['itemUrl']})")
         else:
             st.write("検索結果が見つかりませんでした。")
+    else:
+            st.write("表示できるワインの選択肢がありません。")

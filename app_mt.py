@@ -18,7 +18,7 @@ RAKUTEN_APP_ID = "1073975717553562237"
 
 def get_wine_recommendations(product, occasion, recipient, budget):
     # ChatGPT 4を使用したワインのレコメンド
-    response = openai.ChatCompletion.create(
+    response = openai.chat.completions.create(
         model="gpt-3.5-turbo",  # GPT-4モデルを指定
         messages=[
             {"role": "system", "content": "あなたはワインの専門家です。日本語で回答してください。"},

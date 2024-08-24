@@ -53,7 +53,7 @@ def search_rakuten(product_name):
     if len(product_name) > 128:
         product_name = product_name[:128]
     
-    url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706"
+    url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601"
     
     params = {
         "format": "json",

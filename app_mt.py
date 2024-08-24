@@ -112,6 +112,7 @@ with col2:
     
     st.header('🍾 レコメンド結果')
     # レコメンド結果を取得
+    formatted_recommendations = ""  # ここで変数を初期化
     if st.session_state.recommendations:
         recommendations = st.session_state.recommendations
         formatted_recommendations = format_recommendations(recommendations)

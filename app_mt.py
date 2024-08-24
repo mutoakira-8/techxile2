@@ -68,7 +68,7 @@ def search_rakuten(product_name):
         # ステータスコードを確認
         if response.status_code == 200:
             data = response.json()
-            st.write("APIレスポンス:", data)  # デバッグ用のレスポンス出力
+            st.write("APIレスポンス:", json.dumps(data, indent=2, ensure_ascii=False))  # デバッグ用のレスポンス出力
             return data
         else:
             st.error(f"楽天APIリクエスト失敗: ステータスコード {response.status_code}")
@@ -157,7 +157,7 @@ with col3:
         st.header(f"'{selected_wine}' の検索結果")
 
         results = search_rakuten(selected_wine)
-        if results and 'Items' in results:
+        if results and 'Items' in results and results['Items']:
             for item in results['Items'][:3]:
                 item_info = item['Item']
                 st.image(item_info['mediumImageUrls'][0]['imageUrl'], width=100)
@@ -166,5 +166,6 @@ with col3:
                 st.write(f"[楽天市場で見る]({item_info['itemUrl']})")
         else:
             st.write("検索結果が見つかりませんでした。")
+            st.write("デバッグ情報:", json.dumps(results, indent=2, ensure_ascii=False))
     else:
             st.write("表示できるワインの選択肢がありません。")

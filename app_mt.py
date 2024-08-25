@@ -160,12 +160,11 @@ with col3:
         if results and 'Items' in results and results['Items']:
             for item in results['Items'][:3]:
                 item_info = item['Item']
-                #st.image(item_info['mediumImageUrls'][0]['imageUrl'], width=100)
-                st.write(f"商品名: {item_info['itemName']}")
-                st.write(f"価格: {item_info['itemPrice']} 円")
-                st.write(f"[楽天市場で見る]({item_info['itemUrl']})")
+                st.image(item_info['mediumImageUrls'][0]['imageUrl'], width=150)
+                st.markdown(f"**価格**: {item_info['itemPrice']} 円")
+                st.markdown(f"[商品ページはこちら]({item_info['itemUrl']})")
         else:
             st.write("検索結果が見つかりませんでした。")
             st.write("デバッグ情報:", json.dumps(results, indent=2, ensure_ascii=False))
     else:
-            st.write("表示できるワインの選択肢がありません。")
+        st.write("表示できるワインの選択肢がありません。")

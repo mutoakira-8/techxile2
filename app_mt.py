@@ -158,13 +158,21 @@ with col3:
 
         results = search_rakuten(selected_wine)
         if results and 'Items' in results and results['Items']:
-            for item in results['Items'][:3]:
+            for item in results['Items']:
                 item_info = item['Item']
-                st.image(item_info['mediumImageUrls'][0]['imageUrl'], width=150)
-                st.markdown(f"**価格**: {item_info['itemPrice']} 円")
-                st.markdown(f"[商品ページはこちら]({item_info['itemUrl']})")
+                
+                # 商品画像
+                image_url = item_info['mediumImageUrls'][0]['imageUrl']
+                st.image(image_url, width=150)
+                
+                # 商品価格
+                price = item_info['itemPrice']
+                st.markdown(f"**価格**: {price} 円")
+                
+                # 商品URL
+                item_url = item_info['itemUrl']
+                st.markdown(f"[商品ページはこちら]({item_url})")
         else:
             st.write("検索結果が見つかりませんでした。")
-            st.write("デバッグ情報:", json.dumps(results, indent=2, ensure_ascii=False))
     else:
         st.write("表示できるワインの選択肢がありません。")

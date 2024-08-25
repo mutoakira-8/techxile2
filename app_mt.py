@@ -11,7 +11,6 @@ else:
 
 st.set_page_config(layout="wide")
 
-
 # OpenAI APIキーの設定
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 RAKUTEN_APP_ID = "1073975717553562237"
@@ -100,18 +99,13 @@ with col1:
         
         submit_button = st.form_submit_button(label='レコメンドを表示')
 
-# 初期化: レコメンド結果を保持するための session_state を使用
-if 'recommendations' not in st.session_state:
-    st.session_state.recommendations = None
-
 # レコメンド結果を表示および保存
 if submit_button:
     recommendations = get_wine_recommendations(product, occasion, recipient, budget)
     st.session_state.recommendations = recommendations
 
- # 中央にレコメンド結果
+# 中央にレコメンド結果
 with col2:
-    
     st.header('🍾 レコメンド結果')
     # レコメンド結果を取得
     formatted_recommendations = ""  # ここで変数を初期化
